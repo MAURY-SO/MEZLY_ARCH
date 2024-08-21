@@ -284,8 +284,8 @@ cat banner.txt
         1)
             echo "PROFILE -> KDE"
             #Plasma minimal
-            arch-chroot /mnt /bin/bash -c "pacman -S plasma dolphin konsole discover sddm ffmpegthumbs ffmpegthumbnailer --noconfirm"
-            arch-chroot /mnt /bin/bash -c "systemctl enable sddm"
+            arch-chroot /mnt /bin/bash -c "pacman -S plasma-desktop plasma-meta dolphin konsole discover sddm ffmpegthumbs ffmpegthumbnailer --noconfirm"
+            arch-chroot /mnt /bin/bash -c "systemctl enable sddm.service"
             arch-chroot /mnt /bin/bash -c "pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber helvum"
         	arch-chroot /mnt /bin/bash -c "pacman -S gnu-free-fonts ttf-hack ttf-inconsolata gnome-font-viewer --noconfirm"
 	        clear
