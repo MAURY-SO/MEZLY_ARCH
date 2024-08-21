@@ -4,9 +4,17 @@ clear
 cat banner.txt
 
 #INFO
-
+    discosdisponibles=$(echo "print devices" | parted | grep /dev/ | awk '{if (NR!=1) {print}}' | sed '/sr/d')
+    clear
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
     echo ""
+    echo "Rutas de Disco disponible: "
+    echo ""
+    echo $discosdisponibles
+    echo ""
+    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
+    echo ""
+    read -p "path disk -> " disco
     read -p "username -> " username
     read -p "password -> " password
     read -p "Profile (1.KDE / 2.MINIMAL) -> " profile
@@ -149,7 +157,17 @@ cat banner.txt
 
 #SYSTEM (LANGUAGE
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
-    echo -e ""
+    idioma=$(curl https://ipapi.co/languages | awk -F "," '{print $1}' | sed 's/-/_/g' | sed "s|$|.UTF8|")
+    echo ""
+    echo "$idioma UTF-8" > /etc/locale.gen
+    locale-gen
+    echo "LANG=$idioma" > /etc/locale.conf
+    exportlang=$(echo "LANG=$idioma")
+    export $exportlang
+    export LANG=$idioma
+    export $(cat /etc/locale.conf)
+    locale-gen
+    echo ""
     echo -e "\t\t\t| Lenguage System|"
     echo -e ""
     echo "$idioma UTF-8" > /mnt/etc/locale.gen
@@ -280,7 +298,7 @@ cat banner.txt
             ;;
     esac
 
-#SYSTEM (UNMOUNT - REBOOT)
+#SYSTEM (UNMOUNT - REBOOT) 
     umount -R /mnt
     swapoff -a
     clear
