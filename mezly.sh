@@ -1,11 +1,11 @@
 #! /bin/bash
 
 clear
+discosdisponibles=$(echo "print devices" | parted | grep /dev/ | awk '{if (NR!=1) {print}}' | sed '/sr/d')
 cat banner.txt
 
 #INFO
-    discosdisponibles=$(echo "print devices" | parted | grep /dev/ | awk '{if (NR!=1) {print}}' | sed '/sr/d')
-    clear
+    
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
     echo ""
     echo "Rutas de Disco disponible: "
