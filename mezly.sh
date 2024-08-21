@@ -281,9 +281,9 @@ cat banner.txt
     esac
 
 #SYSTEM (UNMOUNT - REBOOT)
-umount -R /mnt
-swapoff -a
-clear
-echo "Your system is installed!!!"
-sleep 5
-reboot
+    umount -R /mnt
+    swapoff -a
+    clear
+    echo "Your system is installed!!!"
+    sleep 5
+    reboot
