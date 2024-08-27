@@ -59,11 +59,10 @@ cat banner.txt
     clear
     echo -e "${BOLD}${GREEN}Formatting Partitions...${RESET}"
     mkfs.ext4 $(cat root-efi) 
-	mount $(cat root-efi) /mnt 
-
-    mkdir -p /mnt/efi 
 	mkfs.fat -F 32 $(cat boot-efi) 
-	mount $(cat boot-efi) /mnt/efi 
+
+    mount $(cat root-efi) /mnt
+	mount --mkdir $(cat boot-efi) /mnt/efi 
 
     rm boot-efi
 	rm root-efi
