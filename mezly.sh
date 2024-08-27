@@ -47,15 +47,17 @@ cat banner.txt
     echo $partition | awk -F ' ' '{print $1}' >  boot-efi
 	echo $partition | awk -F ' ' '{print $2}' >  root-efi
 
+    #PARTITIONS
+    clear
     echo "Your EFI partition is:" 
 	cat boot-efi
-    echo "Your EFI partition is:" 
+    echo "Your ROOT partition is:" 
 	cat root-efi
     sleep 10
 
     #Formatting Partitions
-
-    echo -e "Formatting Partitions..."
+    clear
+    echo -e "${BOLD}${GREEN}Formatting Partitions...${RESET}"
     mkfs.ext4 $(cat root-efi) 
 	mount $(cat root-efi) /mnt 
 
