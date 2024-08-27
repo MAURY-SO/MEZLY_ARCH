@@ -49,15 +49,15 @@ cat banner.txt
 
     #PARTITIONS
     clear
-    echo "Your EFI partition is:" 
+    echo -e "${BOLD}Your EFI partition is:${RESET}" 
 	cat boot-efi
-    echo "Your ROOT partition is:" 
+    echo -e "${BOLD}Your ROOT partition is:${RESET}" 
 	cat root-efi
-    sleep 10
+    sleep 3
 
     #Formatting Partitions
-    clear
     echo -e "${BOLD}${GREEN}Formatting Partitions...${RESET}"
+    sleep 2
     mkfs.ext4 $(cat root-efi) 
 	mkfs.fat -F 32 $(cat boot-efi) 
 
@@ -66,6 +66,13 @@ cat banner.txt
 
     rm boot-efi
 	rm root-efi
+
+    clear
+	echo ""
+	echo "${BOLD}${GREEN}Check the mount point at MOUNTPOINT - PRESS ENTER${RESET}"
+	echo ""
+	lsblk -l
+	read line
 
 # #MIRRORS
 #     clear
