@@ -1,8 +1,9 @@
 #! /bin/bash
 
-clear
-discosdisponibles=$(echo "print devices" | parted | grep /dev/ | awk '{if (NR!=1) {print}}' | sed '/sr/d')
-cat banner.txt
+#BANNER
+    clear
+    discosdisponibles=$(echo "print devices" | parted | grep /dev/ | awk '{if (NR!=1) {print}}' | sed '/sr/d')
+    cat banner.txt
 
 #COLOURS
     RED='\033[0;31m'
@@ -54,6 +55,7 @@ cat banner.txt
     echo -e "${BOLD}Your ROOT partition is:${RESET}" 
 	cat root-efi
     sleep 3
+    echo ""
 
     #Formatting Partitions
     echo -e "${BOLD}${GREEN}Formatting Partitions...${RESET}"
@@ -69,11 +71,27 @@ cat banner.txt
 
     clear
 	echo ""
-	echo "${BOLD}${GREEN}Check the mount point at MOUNTPOINT - PRESS ENTER${RESET}"
+	echo -e "${BOLD}${GREEN}Check the mount point at MOUNTPOINT - PRESS ENTER${RESET}"
 	echo ""
 	lsblk -l
 	read line
 
-# #MIRRORS
-#     clear
-#     pacman -Sy reflector python --noconfirm
+#MIRRORS
+    clear
+    pacman -Syy
+    pacman -Sy archlinux-keyring --noconfirm 
+    pacman -Sy reflector python --noconfirm
+    echo "${BOLD}${GREEN}Check Mirrorlist...${RESET}"
+    sleep 1
+    reflector --verbose --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
+    clear
+
+#SYSTEM BASE - KERNEL
+    echo ""
+    echo "${GREEN}${BOLD}->Installing base system.${RESET}"
+    pacstrap /mnt base base-devel nano
+
+    clear
+    echo ""
+    echo "${GREEN}${BOLD}->Installing kernel.${RESET}"
+    pacstrap /mnt linux-zen linux-firmware linux-zen-headers mkinitcpio
