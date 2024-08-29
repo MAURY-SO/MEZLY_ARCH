@@ -88,10 +88,46 @@
 
 #SYSTEM BASE - KERNEL
     echo ""
-    echo "${GREEN}${BOLD}->Installing base system.${RESET}"
+    echo -e "${GREEN}${BOLD}->Installing base system.${RESET}"
     pacstrap /mnt base base-devel nano
 
     clear
     echo ""
-    echo "${GREEN}${BOLD}->Installing kernel.${RESET}"
+    echo -e "${GREEN}${BOLD}->Installing kernel.${RESET}"
     pacstrap /mnt linux-zen linux-firmware linux-zen-headers mkinitcpio
+
+#FSTAB
+
+    clear                   
+    echo ""
+    echo -e "${BOLD}${GREEN}File FSTAB${RESET}"
+    echo ""
+
+#CHROOT
+
+    clear
+    echo ""
+    arch-chroot /mnt
+    echo ""
+
+#HOST 
+    clear
+    hostname=Mezly
+    echo "$hostname" > /mnt/etc/hostname
+    echo "127.0.1.1 $hostname.localdomain $hostname" > /mnt/etc/hosts
+    clear
+    echo "Hostname: $(cat /mnt/etc/hostname)"
+    echo ""
+    echo "Hosts: $(cat /mnt/etc/hosts)"
+    echo ""
+    clear
+
+#USER
+    arch-chroot /mnt /bin/bash -c "(echo $password ; echo $password) | passwd root"
+    arch-chroot /mnt /bin/bash -c "useradd -m -g users -s /bin/bash $username"
+    arch-chroot /mnt /bin/bash -c "(echo $password ; echo $password) | passwd $username"
+    sed -i "80i $username ALL=(ALL) ALL"  /mnt/etc/sudoers
+    clear
+
+# LENGUAGE
+    idioma=$(curl https://ipapi.co/languages | awk -F "," '{print $1}' | sed 's/-/_/g' | sed "s|$|.UTF8|")
